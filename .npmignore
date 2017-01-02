@@ -1,0 +1,9 @@
+# tests
+
+.vscode
+bin
+coverage
+node_modules
+test
+circle.yml
+mocha.opts

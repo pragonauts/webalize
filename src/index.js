@@ -70,7 +70,7 @@ function camelcaseToWebalized (str) {
  * @example
  * url.toCamelCase('ŇěJaký čupr', true) // === 'nejakyCupr'
  */
-function toCamelCase (str, withDiacritics = false) {
+function toCamelCase (str, withDiacritics) {
     let preparedString = `${str}`;
 
     if (withDiacritics) {
@@ -97,14 +97,16 @@ function toCamelCase (str, withDiacritics = false) {
  * @example
  * url.webalizeChunks('/blahBlah/haHa'), '/blah-blah/ha-ha'
  */
-function webalizeChunks (string, separator = '/') {
+function webalizeChunks (string, separator) {
     if (typeof string !== 'string') {
         return '';
     }
 
-    return string.split(separator)
+    const useSeparator = separator || '/';
+
+    return string.split(useSeparator)
         .map(part => camelcaseToWebalized(part))
-        .join(separator);
+        .join(useSeparator);
 }
 
 /**
@@ -116,14 +118,16 @@ function webalizeChunks (string, separator = '/') {
  * @example
  * url.camelCaseChunks('/blah-blah/ha-ha') // === '/blahBlah/haHa'
  */
-function camelCaseChunks (string, separator = '/') {
+function camelCaseChunks (string, separator) {
     if (typeof string !== 'string') {
         return '';
     }
 
-    return string.split(separator)
+    const useSeparator = separator || '/';
+
+    return string.split(useSeparator)
         .map(part => toCamelCase(part))
-        .join(separator);
+        .join(useSeparator);
 }
 
 /**
@@ -135,13 +139,13 @@ function camelCaseChunks (string, separator = '/') {
  * @param {any} [notFoundView=null]
  * @returns {string|null}
  */
-function asTemplateUrl (path, urlParam, homeView, notFoundView = null) {
+function asTemplateUrl (path, urlParam, homeView, notFoundView) {
     let cleanUrl = path.replace(/^\/|\/$/g, '');
 
     if (!cleanUrl) {
         cleanUrl = homeView;
     } else if (cleanUrl === homeView || looksLikeFile(urlParam)) {
-        cleanUrl = notFoundView;
+        cleanUrl = typeof notFoundView === 'undefined' ? null : notFoundView;
     }
 
     return camelCaseChunks(cleanUrl);

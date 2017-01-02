@@ -1,6 +1,6 @@
 {
   "name": "webalize",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Utilities for replacing diacritics and camelcase notations",
   "main": "src/index.js",
   "scripts": {
